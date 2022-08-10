@@ -3,13 +3,14 @@ import {
   Card,
   CardBody,
   CardImg,
-  CardImgOverlay,
   CardText,
   CardTitle,
 } from "reactstrap";
 
+
 const DishDetail = (props) => {
-  const { dish } = props;
+    const { dish } = props;
+    console.log(props.dish);
   const renderDish = (dish) => {
     return (
       <div className="col-12 col-md-5 mt-1">
