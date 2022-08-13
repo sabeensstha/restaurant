@@ -13,7 +13,7 @@ const Menu = (props) => {
     //         );
     // }
 
-    const menu = props.dis.map((dish) => {
+    const menu = props.dishes.map((dish) => {
         return (
             <div key={dish.id} className='col-12 col-md-5 mt-1'>
                 <Card onClick={() => props.onClick(dish.id)}>
@@ -27,6 +27,7 @@ const Menu = (props) => {
     });
     return (
         <div className="container">
+        <p>Hello</p>
             <div className="row">
                 {menu}
             </div>

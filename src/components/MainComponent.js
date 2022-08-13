@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import Home from "./HomeComponent";
 import Menu from "./Menu";
 import DishDetail from "./DishDetail";
 import { DISHES } from "../shared/dishes";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
+import { Routes, Route } from "react-router-dom";
 
 const Main = () => {
   const [dishes, setdishes] = useState(DISHES);
@@ -21,8 +23,11 @@ const Main = () => {
   return (
     <div>
       <Header />
-      <Menu dis={dishes} onClick={(dishId) => onDishSelect(dishId)} />
-      {renderDish(selectedDish)};
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route exact path="/menu" element={<Menu dishes={dishes} />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
       <Footer />
     </div>
   );
