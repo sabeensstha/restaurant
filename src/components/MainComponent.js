@@ -17,7 +17,6 @@ const Main = () => {
   const [comments, setComments] = useState(COMMENTS);
   const [leaders, setLeaders] = useState(LEADERS);
   const [promotions, setPromotions] = useState(PROMOTIONS);
-  const [selectedDish, setSelectedDish] = useState(null);
   // function onDishSelect(dishId) {
   //   setSelectedDish(dishId);
   // }
@@ -54,8 +53,8 @@ const Main = () => {
         />
         <Route exact path="/menu" element={<Menu dishes={dishes} />} />
         <Route exact path="/menu/:dishId" element={<DishWithId />} />
+        <Route exact path="/aboutus" element={<About leaders={leaders} />} />
         <Route exact path="/contact" element={<Contact />} />
-        <Route exact path="/aboutus" element={<About />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <Footer />
