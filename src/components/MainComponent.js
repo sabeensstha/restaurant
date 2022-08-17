@@ -1,65 +1,59 @@
-import React, { useState } from "react";
+import React from "react";
 import Home from "./HomeComponent";
 import Menu from "./Menu";
 import DishDetail from "./DishDetail";
 import Contact from "./Contact";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
-import { DISHES } from "../shared/dishes";
-import { COMMENTS } from "../shared/comments";
-import { PROMOTIONS } from "../shared/promotions";
-import { LEADERS } from "../shared/leaders";
-import { Routes, Route, useParams } from "react-router-dom";
+
+import { Switch, Route, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import About from "./About";
 
-const Main = () => {
-  const [dishes, setdishes] = useState(DISHES);
-  const [comments, setComments] = useState(COMMENTS);
-  const [leaders, setLeaders] = useState(LEADERS);
-  const [promotions, setPromotions] = useState(PROMOTIONS);
-  // function onDishSelect(dishId) {
-  //   setSelectedDish(dishId);
-  // }
-  // const renderDish = (dish) => {
-  //   if (dish != null)
-  //     return (
-  //       <DishDetail dish={dishes.filter((dis) => dis.id === selectedDish)[0]} />
-  //     );
-  //   else return <div></div>;
-  // };
-  const DishWithId = () => {
-    let { dishId } = useParams();
-    console.log(2);
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
+
+const Main = (props) => {
+  const DishWithId = ({match}) => {
     return (
       <DishDetail
-        dish={dishes.filter((dish) => dish.id === parseInt(dishId,10))[0]}
-        comments={comments.filter((comment) => comment.dishId === parseInt(dishId,10))}
+        dish={
+          props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]
+        }
+        comments={props.comments.filter(
+          (comment) => comment.dishId === parseInt(match.params.dishId, 10)
+        )}
       />
     );
   };
   return (
     <div>
       <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              dishes={dishes.filter((dish) => dish.featured)[0]}
-              promotions={promotions.filter((promo) => promo.featured)[0]}
-              leaders={leaders.filter((leader) => leader.featured)[0]}
-            />
-          }
-        />
-        <Route exact path="/menu" element={<Menu dishes={dishes} />} />
-        <Route exact path="/menu/:dishId" element={<DishWithId />} />
-        <Route exact path="/aboutus" element={<About leaders={leaders} />} />
-        <Route exact path="/contact" element={<Contact />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <Switch>
+        <Route path="/" exact>
+          <Home
+            dishes={props.dishes.filter((dish) => dish.featured)[0]}
+            promotions={props.promotions.filter((promo) => promo.featured)[0]}
+            leaders={props.leaders.filter((leader) => leader.featured)[0]}
+          />
+        </Route>
+        <Route path="/aboutus" exact>
+          <About leaders={props.leaders} />
+        </Route>
+        <Route exact path="/menu" children={<Menu dishes={props.dishes} />} />
+        <Route exact path="/menu/:dishId" component={DishWithId} />
+        <Route exact path="/contact" children={<Contact />} />
+        <Route exact path="*" children={<Home />} />
+      </Switch>
       <Footer />
     </div>
   );
 };
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));

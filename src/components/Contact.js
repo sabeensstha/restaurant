@@ -9,7 +9,6 @@ import {
   Label,
   Input,
   Col,
-  Row,
   FormFeedback,
 } from "reactstrap";
 
@@ -120,7 +119,7 @@ function Contact(props) {
             >
               <i className="fa fa-phone"></i> Call
             </a>
-            <a role="button" className="btn btn-info">
+            <a role="button" className="btn btn-info" href="123">
               <i className="fa fa-skype"></i> Skype
             </a>
             <a
