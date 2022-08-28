@@ -44,7 +44,7 @@ const Header = () => {
   };
   return (
     <div>
-      <Navbar dark expand="md">
+      <Navbar light expand="md">
         <div className="container">
           <NavbarToggler onClick={toggleNav} />
           <NavbarBrand className="mr-auto" href="/">

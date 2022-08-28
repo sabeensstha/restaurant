@@ -11,6 +11,7 @@ import {
   Col,
   FormFeedback,
 } from "reactstrap";
+import {Control,LocalForm,Errors} from "react-redux-form"
 
 function Contact(props) {
   const [firstName, setFirstName] = useState("");

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./HomeComponent";
 import Menu from "./Menu";
 import DishDetail from "./DishDetail";
@@ -9,6 +9,12 @@ import Footer from "./FooterComponent";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import About from "./About";
+import axios from "axios";
+import { addComment } from "../redux/ActionCreator";
+
+const a = "This is fun";
+console.log(a);
+console.log(a.replace("This", "JS")); 
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
@@ -18,16 +24,47 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) =>
+    dispatch(addComment(dishId, rating, author, comment)),
+});
+// var Arr1 = ["Banana", "Apple", "Chhery", "Grapes"];
+// var Arr= [1, 100, 7, 2, 8, 3, 4, 5, 0, 9];
+
+// for (var i = 1; i < Arr.length; i++)
+//   for (var j = 0; j < i; j++)
+//     if (Arr[i] < Arr[j]) {
+//       var x = Arr[i];
+//       Arr[i] = Arr[j];
+//       Arr[j] = x;
+//     }
+// Arr1.sort(function (a, b) {
+//   return a - b;
+// });
+// console.log(Arr);
+// console.log(Arr1);
+
 const Main = (props) => {
-  const DishWithId = ({match}) => {
+  const [student, setStudent] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`https://62da3c449eedb6996369254e.mockapi.io/student/v1/students`)
+      .then((response) => {
+        setStudent(response.data);
+      });
+  }, []);
+  const DishWithId = ({ match }) => {
     return (
       <DishDetail
         dish={
-          props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]
+          props.dishes.filter(
+            (dish) => dish.id === parseInt(match.params.dishId, 10)
+          )[0]
         }
         comments={props.comments.filter(
           (comment) => comment.dishId === parseInt(match.params.dishId, 10)
         )}
+        addComment={props.addComment}
       />
     );
   };
@@ -55,4 +92,4 @@ const Main = (props) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
